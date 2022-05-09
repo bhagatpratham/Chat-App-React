@@ -16,6 +16,11 @@ const io = socketio(server);
 io.on("connection", (socket) => {
   console.log("we have a new connection!!!");
 
+  // from client
+  socket.on("join", ({ name, room }) => {
+    console.log(name, room);
+  });
+
   socket.on("disconnect", () => {
     console.log("user left.");
   });
