@@ -11,7 +11,15 @@ const server = http.createServer(app);
 
 app.use(router);
 
-const io = socketio(server);
+// const io = socketio(server);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  },
+});
 
 io.on("connection", (socket) => {
   console.log("we have a new connection!!!");
@@ -23,6 +31,10 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("user left.");
+  });
+
+  socket.on("connect_error", (err) => {
+    console.log(`connect_error due to ${err.message}`);
   });
 });
 
